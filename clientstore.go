@@ -54,6 +54,6 @@ func NewClientStore() *ClientStore {
 		HostName:        "",
 		Path:            "",
 		ClientChallenge: "",
-		Epoch:           time.Now().Unix() / int64(time.Millisecond),
+		Epoch:           time.Now().UnixNano() / int64(time.Millisecond),
 	}
 }
