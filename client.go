@@ -43,15 +43,27 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"time"
 )
 
 const ClientStoreFile = "zclient.store"
 
 type ClientStore struct {
-	User            string
-	Hostname        string
-	Path            string
-	ClientChallenge string
+	User            string `json:"user"`
+	HostName        string `json:"hostName"`
+	Path            string `json:"path"`
+	ClientChallenge string `json:"clientChallenge"`
+	Epoch           int64  `json:"epoch"`
+}
+
+func NewClientStore() *ClientStore {
+	return &ClientStore{
+		User:            "",
+		HostName:        "",
+		Path:            "",
+		ClientChallenge: "",
+		Epoch:           time.Now().Unix() / int64(time.Millisecond),
+	}
 }
 
 /*
@@ -81,7 +93,6 @@ type Client struct {
 }
 
 func NewClient(server string, path string, clientStoreFile string, serverStoreFilePath string) *Client {
-
 	if len(clientStoreFile) == 0 {
 		clientStoreFile = ClientStoreFile
 	}
@@ -101,12 +112,11 @@ func (c *Client) Generate(user string, _ string, hostname string) error {
 	reqNegotiate.HostName = hostname
 	reqNegotiate.FolderName = c.path
 
-	out := &ClientStore{
-		User:            user,
-		Hostname:        hostname,
-		Path:            c.path,
-		ClientChallenge: reqNegotiate.ClientChallenge,
-	}
+	out := NewClientStore()
+	out.User = user
+	out.HostName = hostname
+	out.Path = c.path
+	out.ClientChallenge = reqNegotiate.ClientChallenge
 
 	if err := c.saveStore(out); err != nil {
 		return err
@@ -170,7 +180,7 @@ func (c *Client) Restore() error {
 	}
 	reqNegotiate := NewMessageNegotiate()
 	reqNegotiate.UserName = store.User
-	reqNegotiate.HostName = store.Hostname
+	reqNegotiate.HostName = store.HostName
 	reqNegotiate.FolderName = store.Path
 	reqNegotiate.Hash = folderHash
 	reqNegotiate.ClientChallenge = store.ClientChallenge
@@ -206,7 +216,7 @@ func (c *Client) loadStore() (*ClientStore, error) {
 	if err != nil {
 		return nil, err
 	}
-	store := &ClientStore{}
+	store := NewClientStore()
 	err = json.Unmarshal(body, store)
 	if err != nil {
 		return nil, err

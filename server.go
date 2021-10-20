@@ -59,11 +59,13 @@ const (
 const ServerStoreFile = "zserver.store"
 
 type ServerStore struct {
-	Key             string
-	Timestamp       string
-	ServerChallenge string
-	//Hash            []byte
-	Result []byte
+	Key             string `json:"key"`
+	User            string `json:"user"`
+	HostName        string `json:"hostName"`
+	Path            string `json:"path"`
+	Timestamp       string `json:"timestamp"`
+	ServerChallenge string `json:"serverChallenge"`
+	Result          []byte `json:"result"`
 }
 
 type Server struct {
@@ -192,8 +194,12 @@ func (api *Server) challengeHandler(w http.ResponseWriter, request *http.Request
 		http.Error(w, "already exists", http.StatusConflict)
 		return
 	}
+	store.User = resNegotiate.UserName
+	store.HostName = resNegotiate.HostName
+	store.Path = resNegotiate.FolderName
 	store.Timestamp = api.createTimestamp()
 	store.ServerChallenge = api.createChallenge(_serverChallengeLen)
+
 	hasher := NewHasherZ()
 	hash := hasher.CreateHash([]byte(resNegotiate.Hash), resNegotiate.UserName, resNegotiate.HostName, resNegotiate.FolderName)
 	store.Result = hasher.CreateResponse(hash, []byte(store.ServerChallenge), []byte(resNegotiate.ClientChallenge), []byte(store.Timestamp))
