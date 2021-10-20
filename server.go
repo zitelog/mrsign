@@ -56,18 +56,6 @@ const (
 	apiRetrieve  = "/v1/api/retrieve/"
 )
 
-const ServerStoreFile = "zserver.store"
-
-type ServerStore struct {
-	Key             string `json:"key"`
-	User            string `json:"user"`
-	HostName        string `json:"hostName"`
-	Path            string `json:"path"`
-	Timestamp       string `json:"timestamp"`
-	ServerChallenge string `json:"serverChallenge"`
-	Result          []byte `json:"result"`
-}
-
 type Server struct {
 	server          *http.Server
 	cfg             *Config

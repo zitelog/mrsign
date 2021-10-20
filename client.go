@@ -43,28 +43,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"time"
 )
-
-const ClientStoreFile = "zclient.store"
-
-type ClientStore struct {
-	User            string `json:"user"`
-	HostName        string `json:"hostName"`
-	Path            string `json:"path"`
-	ClientChallenge string `json:"clientChallenge"`
-	Epoch           int64  `json:"epoch"`
-}
-
-func NewClientStore() *ClientStore {
-	return &ClientStore{
-		User:            "",
-		HostName:        "",
-		Path:            "",
-		ClientChallenge: "",
-		Epoch:           time.Now().Unix() / int64(time.Millisecond),
-	}
-}
 
 /*
 func getIps() ([]string, error) {
