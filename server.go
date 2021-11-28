@@ -189,7 +189,9 @@ func (api *Server) challengeHandler(w http.ResponseWriter, request *http.Request
 	store.ServerChallenge = api.createChallenge(_serverChallengeLen)
 
 	hasher := NewHasherZ()
+
 	hash := hasher.CreateHash([]byte(resNegotiate.Hash), resNegotiate.UserName, resNegotiate.HostName, resNegotiate.FolderName)
+
 	store.Result = hasher.CreateResponse(hash, []byte(store.ServerChallenge), []byte(resNegotiate.ClientChallenge), []byte(store.Timestamp))
 
 	fmt.Println("--------------------------------")
