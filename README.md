@@ -1,6 +1,13 @@
 # MrSign
 MrSign is an application used for generate and verify a signature by of the contents of a directory . This is application is based on client/server architecture and It is developed in Go language. This is a POC version and we are using it in combination with [FIT](https://github.com/zitelog/fit).
 
+The mechanism to calculate the signature is created and delevoped by **Marcello Russo @markel1974**. It uses the message authentication method provided in the [HMAC protocol with MD5](https://it.wikipedia.org/wiki/HMAC), obtained from the union of a series of variables. This signature is generated and stored on a server together with other elements, such as: SID (Signature ID),  server (timestamp), client username, etc.  
+
+**The following flow explain it better.**
+
+
+![alt text](https://github.com/zitelog/mrsign/blob/main/mrsign-signature-flow-en.png?raw=true)
+
 ## Prerequisites
 Make sure you have installed all of the following prerequisites on your development machine:
 * [Download & Install Golang compiler](https://go.dev/dl/).
