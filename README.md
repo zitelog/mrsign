@@ -24,7 +24,7 @@ This will clone the latest version of the FIT repository to a **mrsign** folder.
 ## Compile
 Once you've downloaded MrSign and installed all the prerequisites:
 
-* go in fit folder:
+* go in mrsign folder:
 ```
 cd mrsign
 ```
